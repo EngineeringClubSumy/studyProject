@@ -8,7 +8,7 @@ export default defineConfig({
   workers: 1,
   reporter: 'html',
   use: {
-    baseURL: 'https://playwright.dev',
+    baseURL: 'https://furnituredesigns.ie',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
