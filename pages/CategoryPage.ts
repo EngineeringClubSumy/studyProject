@@ -2,17 +2,28 @@ import {Locator, Page} from '@playwright/test'
 
 export class CategoryPage {
     readonly page: Page;
-    readonly prodyctCards: Locator;
+    readonly prodyctCardsShop: Locator;
+    readonly firstProductLink: Locator;
 
     constructor(page: Page) {
         this.page = page;
-        this.prodyctCards = page.locator('div[class="post-area col span_9 col_last"]')
+        this.prodyctCardsShop = page.locator('.products .product')
+        this.firstProductLink = page.locator('div[class="product-wrap"]').first()
+    }
+
+    async open(): Promise<void> {
+        await this.page.goto('/product-category/sofas/')
     }
 
     async waitForLoaded(): Promise<void> {
-        await this.prodyctCards.first().waitFor({ state: 'visible' })
+        await this.prodyctCardsShop.first().waitFor({ state: 'visible' })
     }
+
     async getProdyctCardsCount(): Promise<number> {
-        return await this.prodyctCards.count();
+        return await this.prodyctCardsShop.count();
+    }
+
+    async openFirstProduct(): Promise<void> {
+        await this.firstProductLink.click()
     }
 }

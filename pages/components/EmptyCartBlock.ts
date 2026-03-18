@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
 
-export class EmptyCartyBlock {
+export class EmptyCartBlock {
     readonly page: Page;
-    readonly emptyMessage: Locator;
+    readonly cartIsEmptyMessageElement: Locator;
     readonly returnToShopButton: Locator;
 
     constructor (page: Page) {
@@ -12,7 +12,8 @@ export class EmptyCartyBlock {
     }
 
     async getEmptyMessageText(): Promise<string> {
-        return await this.emptyMessage.textContent()?.trim()  || '';
+        const text = await this.cartIsEmptyMessageElement.textContent();
+        return text?.trim() || '';
 
     }
     async isReturnToShopBuuttonVisible(): Promise<boolean> {

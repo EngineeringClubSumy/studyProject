@@ -1,17 +1,52 @@
-import {Page} from '@playwright/test';
-import { EmptyCartyBlock } from './components/EmptyCartBlock';
+import {Locator, Page} from '@playwright/test';
+import { EmptyCartBlock } from './components/EmptyCartBlock';
+import { CartItem } from './components/CartItem'; 
+
 
 export class CartPage {
     readonly page: Page;
-    readonly emptyCartBlock: EmptyCartyBlock;
+    readonly emptyCartBlock: EmptyCartBlock;
+    readonly cartItem: CartItem;
+    readonly productNames: Locator;
+    readonly productPrices: Locator;
+    readonly productQuantities: Locator;
 
     constructor(page: Page) {
         this.page = page
-        this.emptyCartBlock = new EmptyCartyBlock(page);
+        this.emptyCartBlock = new EmptyCartBlock(page);
+        this.cartItem = new CartItem(page);
+        this.productNames = page.locator('td[data-title="Product"]')
+        this.productPrices = page.locator('td[data-title="Price"]');
+        this.productQuantities = page.locator('[aria-label="Product quantity"]');
     }
 
     async waitForOpened(): Promise<void> {
         await this.page.waitForURL('**/cart/**')
+    }
+
+    async open(): Promise<void> {
+        await this.page.goto('/cart/')
+    }
+
+    async getFirstProductName(): Promise<string> {
+        const text = await this.productNames.first().textContent();
+        return text?.trim() || '';
+    }
+    async getFirstPriductPrice(): Promise<string> {
+        const text = await this.productPrices.first().textContent();
+        return text?.trim() || '';
+    }
+    async getFirstProductQuantity(): Promise<string> {
+        const value = await this.productQuantities.first().inputValue();
+        return value.trim();
+    }
+
+    async getProductNamesCount(): Promise<number> {
+    return await this.productNames.count();
+    } 
+
+    async waitForCartUpdatedAfterRemove(): Promise<void> {
+    await this.emptyCartBlock.cartIsEmptyMessageElement.waitFor({ state: 'visible' });
     }
 
     //GET
