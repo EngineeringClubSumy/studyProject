@@ -18,4 +18,7 @@ export class EmptyCartyBlock {
     async isReturnToShopBuuttonVisible(): Promise<boolean> {
         return this.returnToShopButton.isVisible();
     }
+    async clickReturnToShop(): Promise<void> {
+        await this.returnToShopButton.click();
+    }
 }
