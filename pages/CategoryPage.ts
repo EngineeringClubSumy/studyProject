@@ -2,12 +2,12 @@ import {Locator, Page} from '@playwright/test'
 
 export class CategoryPage {
     readonly page: Page;
-    readonly prodyctCardsShop: Locator;
+    readonly productCardsShop: Locator;
     readonly firstProductLink: Locator;
 
     constructor(page: Page) {
         this.page = page;
-        this.prodyctCardsShop = page.locator('.products .product')
+        this.productCardsShop = page.locator('.products .product')
         this.firstProductLink = page.locator('div[class="product-wrap"]').first()
     }
 
@@ -20,7 +20,7 @@ export class CategoryPage {
     }
 
     async getProdyctCardsCount(): Promise<number> {
-        return await this.prodyctCardsShop.count();
+        return await this.productCardsShop.count();
     }
 
     async openFirstProduct(): Promise<void> {
