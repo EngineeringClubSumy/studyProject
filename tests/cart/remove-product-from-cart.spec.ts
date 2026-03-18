@@ -25,7 +25,7 @@ test('Verify user can remove product from cart', async ({ page }) => {
 
   await expect(await cartPage.getProductNamesCount()).toBeGreaterThan(0);
 
-  await cartPage.cartItem.clickRemove();
+  await cartPage.getFirstCartItem().clickRemove();
 
   await cartPage.waitForCartUpdatedAfterRemove();
 

@@ -1,12 +1,12 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
 
 export class CartItem {
-  readonly page: Page;
+  readonly root: Locator;
   readonly removeButton: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
-    this.removeButton = page.locator('.cart_item .remove').first();
+  constructor(root: Locator) {
+    this.root = root;
+    this.removeButton = root.locator('.remove');
   }
 
   async clickRemove(): Promise<void> {

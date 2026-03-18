@@ -6,16 +6,16 @@ import { CartItem } from './components/CartItem';
 export class CartPage {
     readonly page: Page;
     readonly emptyCartBlock: EmptyCartBlock;
-    readonly cartItem: CartItem;
     readonly productNames: Locator;
     readonly productPrices: Locator;
     readonly productQuantities: Locator;
+    readonly cartItems: Locator;
 
     constructor(page: Page) {
-        this.page = page
+        this.page = page;
         this.emptyCartBlock = new EmptyCartBlock(page);
-        this.cartItem = new CartItem(page);
-        this.productNames = page.locator('td[data-title="Product"]')
+        this.cartItems = page.locator('.cart_item');
+        this.productNames = page.locator('td[data-title="Product"] a');
         this.productPrices = page.locator('td[data-title="Price"]');
         this.productQuantities = page.locator('[aria-label="Product quantity"]');
     }
@@ -32,7 +32,7 @@ export class CartPage {
         const text = await this.productNames.first().textContent();
         return text?.trim() || '';
     }
-    async getFirstPriductPrice(): Promise<string> {
+    async getFirstProductPrice(): Promise<string> {
         const text = await this.productPrices.first().textContent();
         return text?.trim() || '';
     }
@@ -48,9 +48,15 @@ export class CartPage {
     async waitForCartUpdatedAfterRemove(): Promise<void> {
     await this.emptyCartBlock.cartIsEmptyMessageElement.waitFor({ state: 'visible' });
     }
+    getCartItem(): CartItem {
+    return new CartItem(this.cartItems);
+    }
 
     //GET
     getUrl(): string {
         return this.page.url();
     }
+    getFirstCartItem(): CartItem {
+    return new CartItem(this.cartItems.first());
+}
 }

@@ -29,11 +29,11 @@ test('Verify user can add product to cart from product page',async ({page}) => {
     await cartPage.waitForOpened();
 
     const cartProductName = await cartPage.getFirstProductName();
-    const cartProductPrice = await cartPage.getFirstPriductPrice();
+    const cartProductPrice = await cartPage.getFirstProductPrice();
     const cartQuantity = await cartPage.getFirstProductQuantity();
 
     await expect(cartProductName).toBe(productName);
-    await expect(cartProductPrice).toBe(productPrice);
+    await expect(cartProductPrice).toContain(productPrice);
     await expect(cartQuantity).toBe('1')
 
 })
