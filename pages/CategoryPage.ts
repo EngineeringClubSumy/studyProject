@@ -16,7 +16,7 @@ export class CategoryPage {
     }
 
     async waitForLoaded(): Promise<void> {
-        await this.prodyctCardsShop.first().waitFor({ state: 'visible' })
+        await this.productCardsShop.first().waitFor({ state: 'visible' })
     }
 
     async getProdyctCardsCount(): Promise<number> {
