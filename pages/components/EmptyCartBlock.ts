@@ -12,8 +12,8 @@ export class EmptyCartyBlock {
     }
 
     async getEmptyMessageText(): Promise<string> {
-        const text = await this.emptyMessage.textContent();
-        return text?.trim() || '';
+        return await this.emptyMessage.textContent()?.trim()  || '';
+
     }
     async isReturnToShopBuuttonVisible(): Promise<boolean> {
         return this.returnToShopButton.isVisible();
