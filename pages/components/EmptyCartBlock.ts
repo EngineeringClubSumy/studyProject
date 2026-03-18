@@ -7,7 +7,7 @@ export class EmptyCartyBlock {
 
     constructor (page: Page) {
         this.page = page;
-        this.emptyMessage = page.locator('div[class="cart-empty woocommerce-info"]');
+        this.cartIsEmptyMessageElement = page.locator('div[class="cart-empty woocommerce-info"]');
         this.returnToShopButton = page.locator('a[class="button wc-backward"]');
     }
 
