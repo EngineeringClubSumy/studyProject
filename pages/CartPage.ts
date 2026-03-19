@@ -1,6 +1,6 @@
 import {Locator, Page} from '@playwright/test';
-import { EmptyCartBlock } from './components/EmptyCartBlock';
-import { CartItem } from './components/CartItem'; 
+import { EmptyCartBlock } from '@components/EmptyCartBlock';
+import { CartItem } from '@components/CartItem'; 
 
 
 export class CartPage {
@@ -48,15 +48,14 @@ export class CartPage {
     async waitForCartUpdatedAfterRemove(): Promise<void> {
     await this.emptyCartBlock.cartIsEmptyMessageElement.waitFor({ state: 'visible' });
     }
-    getCartItem(): CartItem {
-    return new CartItem(this.cartItems);
-    }
+    
 
     //GET
     getUrl(): string {
         return this.page.url();
     }
-    getFirstCartItem(): CartItem {
-    return new CartItem(this.cartItems.first());
-}
+    getCartItem(index: number): CartItem {
+    return new CartItem(this.cartItems.nth(index));
+    }
+ 
 }

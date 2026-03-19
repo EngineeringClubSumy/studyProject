@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../../pages/HomePage';
-import { CartPage } from '../../pages/CartPage';
-import { CategoryPage } from '../../pages/CategoryPage';
+import { HomePage } from '@pages/HomePage';
+import { CartPage } from '@pages/CartPage';
+import { CategoryPage } from '@pages/CategoryPage';
 
 test('Verify user can return to shop from empty cart page', async ({page}) => {
     const homePage = new HomePage(page);

@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../../pages/HomePage';
-import { CategoryPage } from '../../pages/CategoryPage';
-import { ProductPage } from '../../pages/ProductPage';
-import { CartPage } from '../../pages/CartPage';
+import { HomePage } from '@pages/HomePage';
+import { CategoryPage } from '@pages/CategoryPage';
+import { ProductPage } from '@pages/ProductPage';
+import { CartPage } from '@pages/CartPage';
 
 
 test('Verify user can remove product from cart', async ({ page }) => {
@@ -10,6 +10,7 @@ test('Verify user can remove product from cart', async ({ page }) => {
   const categoryPage = new CategoryPage(page);
   const productPage = new ProductPage(page);
   const cartPage = new CartPage(page);
+  const firstItemIndex = 0;
 
   await homePage.open();
   await categoryPage.open();
@@ -25,7 +26,7 @@ test('Verify user can remove product from cart', async ({ page }) => {
 
   await expect(await cartPage.getProductNamesCount()).toBeGreaterThan(0);
 
-  await cartPage.getFirstCartItem().clickRemove();
+  await cartPage.getCartItem(firstItemIndex).clickRemove();
 
   await cartPage.waitForCartUpdatedAfterRemove();
 

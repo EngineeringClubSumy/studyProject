@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../../pages/HomePage';
-import { CartPage } from '../../pages/CartPage';
+import { HomePage } from '@pages/HomePage';
+import { CartPage } from '@pages/CartPage';
 
 test('Verify empty cart message is displayed when cart has no products', async ({page}) => {
     const homePage = new HomePage(page);
