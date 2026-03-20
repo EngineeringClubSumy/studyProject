@@ -50,9 +50,9 @@ test('Verify only one shipping method can be selected at a time', async ({ page 
     const checkedAfterSecondSelection = await cartPage.getShipmentRadioButtonsCount(true);
     expect(checkedAfterSecondSelection).toBe(EXPECTED_SELECTED_SHIPPING_METHODS_COUNT);
 
-    if (shipmentMethodsCount > MIN_SHIPPING_METHODS_COUNT) {
+    if (shipmentMethodsCount >= 3) {
         const thirdIndex = await cartPage.getThirdShipmentRadioButtonIndex(initiallySelectedIndex, secondIndex);
-        expect(thirdIndex).not.toBe(NO_INDEX_FOUND);
+        expect(thirdIndex).toBeGreaterThanOrEqual(0);
 
         await cartPage.clickShipmentRadioButtonByIndex(thirdIndex);
 

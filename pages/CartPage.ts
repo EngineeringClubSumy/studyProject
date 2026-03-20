@@ -61,8 +61,8 @@ export class CartPage {
     }
 
     async waitForCartUpdatedAfterRemove(): Promise<void> {
-    await this.emptyCartBlock.waitForEmptyMessageVisible();
-}   
+        await this.emptyCartBlock.waitForEmptyMessageVisible();
+    }
 
     async getShipmentRadioButtonsCount(checkedOnly = false): Promise<number> {
         const count = await this.shipmentRadioButtons.count();
@@ -82,12 +82,12 @@ export class CartPage {
         return checkedCount;
     }
 
-        async isShipmentRadioButtonCheckedByIndex(index: number): Promise<boolean> {
+    async isShipmentRadioButtonCheckedByIndex(index: number): Promise<boolean> {
         return await this.shipmentRadioButtons.nth(index).isChecked();
     }
 
     async clickShipmentRadioButtonByIndex(index: number): Promise<void> {
-        await this.shipmentRadioButtons.nth(index).click();
+        await this.shipmentRadioButtons.nth(index).check();
     }
 
     async getFirstCheckedShipmentRadioButtonIndex(): Promise<number> {
@@ -124,7 +124,8 @@ export class CartPage {
         }
 
         return -1;
-}
+    }
+
     async checkVisibleCoreElements(): Promise<void> {
         await this.cartTotals.waitFor({ state: 'visible' });
         await this.shipment.waitFor({ state: 'visible' });
