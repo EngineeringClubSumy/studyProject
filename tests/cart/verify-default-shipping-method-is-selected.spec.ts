@@ -20,8 +20,8 @@ test('Verify default shipping method is selected on Cart page', async ({page}) =
     await categoryPage.openFirstProduct();
 
     await productPage.waitForLoaded();
-    await expect(productPage.addToCartButton).toBeVisible();
-    await expect(productPage.addToCartButton).toBeEnabled();
+    await expect(productPage.getAddToCartButton()).toBeVisible();
+    await expect(productPage.getAddToCartButton()).toBeEnabled();
     await productPage.clickAddToCart();
 
     await cartPage.open();

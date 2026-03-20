@@ -21,8 +21,8 @@ test('Verify only one shipping method can be selected at a time', async ({ page 
     await categoryPage.openFirstProduct();
 
     await productPage.waitForLoaded();
-    await expect(productPage.addToCartButton).toBeVisible();
-    await expect(productPage.addToCartButton).toBeEnabled();
+    await expect(productPage.getAddToCartButton()).toBeVisible();
+    await expect(productPage.getAddToCartButton()).toBeEnabled();
     await productPage.clickAddToCart();
 
     await cartPage.open();

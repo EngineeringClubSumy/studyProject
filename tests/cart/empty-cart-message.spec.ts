@@ -12,5 +12,5 @@ test('Verify empty cart message is displayed when cart has no products', async (
     
     await expect(await cartPage.emptyCartBlock.getEmptyMessageText()).toBe('Your cart is currently empty.');
 
-    await expect(await cartPage.emptyCartBlock.isReturnToShopBuuttonVisible()).toBeTruthy()
+    await expect(await cartPage.emptyCartBlock.isReturnToShopButtonVisible()).toBeTruthy()
 })

@@ -1,11 +1,11 @@
 import { Locator, Page } from '@playwright/test';
 
 export class EmptyCartBlock {
-    readonly page: Page;
-    readonly cartIsEmptyMessageElement: Locator;
-    readonly returnToShopButton: Locator;
+    private readonly page: Page;
+    private readonly cartIsEmptyMessageElement: Locator;
+    private readonly returnToShopButton: Locator;
 
-    constructor (page: Page) {
+    constructor(page: Page) {
         this.page = page;
         this.cartIsEmptyMessageElement = page.locator('div[class="cart-empty woocommerce-info"]');
         this.returnToShopButton = page.locator('a[class="button wc-backward"]');
@@ -14,12 +14,16 @@ export class EmptyCartBlock {
     async getEmptyMessageText(): Promise<string> {
         const text = await this.cartIsEmptyMessageElement.textContent();
         return text?.trim() || '';
+    }
 
+    async isReturnToShopButtonVisible(): Promise<boolean> {
+        return await this.returnToShopButton.isVisible();
     }
-    async isReturnToShopBuuttonVisible(): Promise<boolean> {
-        return this.returnToShopButton.isVisible();
-    }
+
     async clickReturnToShop(): Promise<void> {
         await this.returnToShopButton.click();
+    }
+    async waitForEmptyMessageVisible(): Promise<void> {
+    await this.cartIsEmptyMessageElement.waitFor({ state: 'visible' });
     }
 }

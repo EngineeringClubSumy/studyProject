@@ -21,9 +21,10 @@ test('Verify user can add product to cart from product page',async ({page}) => {
     const productName = await productPage.getProductName();
     const productPrice = await productPage.getProductPrice();
 
-    await expect(productPage.addToCartButton).toBeVisible();
-    await expect(productPage.addToCartButton).toBeEnabled();
+    await expect(productPage.getAddToCartButton()).toBeVisible();
+    await expect(productPage.getAddToCartButton()).toBeEnabled();
 
+    await productPage.clickAddToCart();
     await productPage.waitForProductAddedToCart();
 
     await cartPage.open();

@@ -61,8 +61,8 @@ export class CartPage {
     }
 
     async waitForCartUpdatedAfterRemove(): Promise<void> {
-        await this.emptyCartBlock.cartIsEmptyMessageElement.waitFor({ state: 'visible' });
-    }
+    await this.emptyCartBlock.waitForEmptyMessageVisible();
+}   
 
     async getShipmentRadioButtonsCount(checkedOnly = false): Promise<number> {
         const count = await this.shipmentRadioButtons.count();

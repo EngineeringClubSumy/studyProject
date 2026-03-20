@@ -16,5 +16,5 @@ test('Verify user can return to shop from empty cart page', async ({page}) => {
     await expect(page).not.toHaveURL(/cart/)
 
     await categoryPage.waitForLoaded();
-    await expect(await categoryPage.getProdyctCardsCount()).toBeGreaterThan(0)
+    await expect(await categoryPage.getProductCardsCount()).toBeGreaterThan(0)
 });

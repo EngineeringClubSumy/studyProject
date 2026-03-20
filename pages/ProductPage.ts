@@ -1,21 +1,21 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page } from '@playwright/test';
 
 export class ProductPage {
-    readonly page: Page;
-    readonly productName: Locator;
-    readonly productPrice: Locator;
-    readonly addToCartButton: Locator;
-    readonly successMessage: Locator;
+    private readonly page: Page;
+    private readonly productName: Locator;
+    private readonly productPrice: Locator;
+    private readonly addToCartButton: Locator;
+    private readonly successMessage: Locator;
 
     constructor(page: Page) {
         this.page = page;
-        this.productName = page.locator('h1[class="product_title entry-title"]');
+        this.productName = page.locator('h1.product_title.entry-title');
         this.productPrice = page.locator('.summary .price ins .woocommerce-Price-amount');
         this.addToCartButton = page.locator('button[name="add-to-cart"]');
         this.successMessage = page.locator('.woocommerce-message');
     }
 
-        async waitForLoaded(): Promise<void> {
+    async waitForLoaded(): Promise<void> {
         await this.productName.waitFor({ state: 'visible' });
     }
 
@@ -27,6 +27,10 @@ export class ProductPage {
     async getProductPrice(): Promise<string> {
         const text = await this.productPrice.textContent();
         return text?.trim() || '';
+    }
+
+    getAddToCartButton(): Locator {
+        return this.addToCartButton;
     }
 
     async isAddToCartButtonVisible(): Promise<boolean> {
@@ -42,8 +46,6 @@ export class ProductPage {
     }
 
     async waitForProductAddedToCart(): Promise<void> {
-        await this.addToCartButton.scrollIntoViewIfNeeded();
-        await this.addToCartButton.click();
+        await this.successMessage.waitFor({ state: 'visible' });
     }
-
 }
