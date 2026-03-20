@@ -8,10 +8,10 @@ test('Verify default shipping method is selected on Cart page', async ({page}) =
     const EXPECTED_MIN_SHIPPING_METHODS_COUNT = 1;
     const EXPECTED_SELECTED_SHIPPING_METHODS_COUNT = 1;
 
-    const homePage = new HomePage(page)
-    const categoryPage = new CategoryPage(page)
-    const productPage = new ProductPage(page)
-    const cartPage = new CartPage(page)
+    const homePage = new HomePage(page);
+    const categoryPage = new CategoryPage(page);
+    const productPage = new ProductPage(page);
+    const cartPage = new CartPage(page);
 
     await homePage.open();
 
