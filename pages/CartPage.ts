@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 import { EmptyCartBlock } from '@components/EmptyCartBlock';
 import { CartItem } from '@components/CartItem';
 
@@ -32,6 +32,11 @@ export class CartPage {
         this.subtotal = page.locator('tr.cart-subtotal');
         this.total = page.locator('tr.order-total');
     }
+
+
+    verifyIndex(index: number): void {
+    expect(index).toBeGreaterThanOrEqual(0);
+}
 
     async waitForOpened(): Promise<void> {
         await this.page.waitForURL('**/cart/**');
@@ -82,12 +87,12 @@ export class CartPage {
         return checkedCount;
     }
 
-        async isShipmentRadioButtonCheckedByIndex(index: number): Promise<boolean> {
-        return await this.shipmentRadioButtons.nth(index).isChecked();
-    }
-
-    async clickShipmentRadioButtonByIndex(index: number): Promise<void> {
-        await this.shipmentRadioButtons.nth(index).click();
+    async checkVisibleCoreElements(): Promise<void> {
+        await expect(this.cartTotals).toBeVisible();
+        await expect(this.shipment).toBeVisible();
+        await expect(this.subtotal).toBeVisible();
+        await expect(this.total).toBeVisible();
+        await expect(this.shipmentRadioButtons.first()).toBeVisible();
     }
 
     async getFirstCheckedShipmentRadioButtonIndex(): Promise<number> {
@@ -102,11 +107,11 @@ export class CartPage {
         return -1;
     }
 
-    async getAnotherShipmentRadioButtonIndex(currentIndex: number): Promise<number> {
+    async getAnotherShipmentRadioButtonIndex(selectedIndex: number): Promise<number> {
         const count = await this.shipmentRadioButtons.count();
 
         for (let i = 0; i < count; i++) {
-            if (i !== currentIndex) {
+            if (i !== selectedIndex) {
                 return i;
             }
         }
@@ -114,22 +119,12 @@ export class CartPage {
         return -1;
     }
 
-    async getThirdShipmentRadioButtonIndex(firstIndex: number, secondIndex: number): Promise<number> {
-        const count = await this.shipmentRadioButtons.count();
+    async clickShipmentRadioButtonByIndex(index: number): Promise<void> {
+        await this.shipmentRadioButtons.nth(index).check();
+    }
 
-        for (let i = 0; i < count; i++) {
-            if (i !== firstIndex && i !== secondIndex) {
-                return i;
-            }
-        }
-
-        return -1;
-}
-    async checkVisibleCoreElements(): Promise<void> {
-        await this.cartTotals.waitFor({ state: 'visible' });
-        await this.shipment.waitFor({ state: 'visible' });
-        await this.subtotal.waitFor({ state: 'visible' });
-        await this.total.waitFor({ state: 'visible' });
+    async isShipmentRadioButtonCheckedByIndex(index: number): Promise<boolean> {
+        return await this.shipmentRadioButtons.nth(index).isChecked();
     }
 
     getUrl(): string {
