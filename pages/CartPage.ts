@@ -125,6 +125,12 @@ export class CartPage {
 
         return -1;
 }
+    async checkVisibleCoreElements(): Promise<void> {
+        await this.cartTotals.waitFor({ state: 'visible' });
+        await this.shipment.waitFor({ state: 'visible' });
+        await this.subtotal.waitFor({ state: 'visible' });
+        await this.total.waitFor({ state: 'visible' });
+    }
 
     getUrl(): string {
         return this.page.url();
