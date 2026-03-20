@@ -82,6 +82,50 @@ export class CartPage {
         return checkedCount;
     }
 
+        async isShipmentRadioButtonCheckedByIndex(index: number): Promise<boolean> {
+        return await this.shipmentRadioButtons.nth(index).isChecked();
+    }
+
+    async clickShipmentRadioButtonByIndex(index: number): Promise<void> {
+        await this.shipmentRadioButtons.nth(index).click();
+    }
+
+    async getFirstCheckedShipmentRadioButtonIndex(): Promise<number> {
+        const count = await this.shipmentRadioButtons.count();
+
+        for (let i = 0; i < count; i++) {
+            if (await this.shipmentRadioButtons.nth(i).isChecked()) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    async getAnotherShipmentRadioButtonIndex(currentIndex: number): Promise<number> {
+        const count = await this.shipmentRadioButtons.count();
+
+        for (let i = 0; i < count; i++) {
+            if (i !== currentIndex) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    async getThirdShipmentRadioButtonIndex(firstIndex: number, secondIndex: number): Promise<number> {
+        const count = await this.shipmentRadioButtons.count();
+
+        for (let i = 0; i < count; i++) {
+            if (i !== firstIndex && i !== secondIndex) {
+                return i;
+            }
+        }
+
+        return -1;
+}
+
     getUrl(): string {
         return this.page.url();
     }
