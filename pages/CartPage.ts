@@ -118,6 +118,18 @@ export class CartPage {
 
         return -1;
     }
+    async getNextFreeButtonIndex(firstIndex: number, secondIndex: number): Promise<number> {
+    const count = await this.shipmentRadioButtons.count();
+
+    for (let i = 0; i < count; i++) {
+        if (i !== firstIndex && i !== secondIndex) {
+            return i;
+        }
+    }
+
+    return -1;
+    }
+    
 
     async clickShipmentRadioButtonByIndex(index: number): Promise<void> {
         await this.shipmentRadioButtons.nth(index).check();
