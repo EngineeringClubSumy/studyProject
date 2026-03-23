@@ -16,6 +16,10 @@ export class CartPage {
     private readonly shipment: Locator;
     private readonly shipmentRadioButtons: Locator;
 
+    private readonly subtotalPrice: Locator;
+    private readonly shipmentPrices: Locator;
+    private readonly totalPrice: Locator;
+
     constructor(page: Page) {
         this.page = page;
         this.emptyCartBlock = new EmptyCartBlock(page);
@@ -31,7 +35,12 @@ export class CartPage {
 
         this.subtotal = page.locator('tr.cart-subtotal');
         this.total = page.locator('tr.order-total');
-    }
+
+        this.subtotalPrice = page.locator('tr.cart-subtotal .woocommerce-Price-amount');
+        this.shipmentPrices = page.locator('tr.woocommerce-shipping-totals.shipping .woocommerce-Price-amount');
+        this.totalPrice = page.locator('tr.order-total .woocommerce-Price-amount');
+
+        }
 
 
     verifyIndex(index: number): void {
@@ -130,7 +139,6 @@ export class CartPage {
     return -1;
     }
     
-
     async clickShipmentRadioButtonByIndex(index: number): Promise<void> {
         await this.shipmentRadioButtons.nth(index).check();
     }
@@ -138,6 +146,45 @@ export class CartPage {
     async isShipmentRadioButtonCheckedByIndex(index: number): Promise<boolean> {
         return await this.shipmentRadioButtons.nth(index).isChecked();
     }
+
+    //helper
+    private parsePrice(text: string | null): number {
+        if (!text) return 0;
+
+        return parseFloat(
+            text
+            .replace('€', '')
+            .replace(',', '')
+            .trim()
+        )
+    }
+
+    //методи для отримання значень
+    async getSubtotalValue(): Promise<number> {
+        const text = await this.subtotalPrice.textContent();
+        return this.parsePrice(text);
+    }
+
+    async getTotalValue(): Promise<number> {
+        const text = await this.totalPrice.textContent();
+        return this.parsePrice(text);
+    }
+
+    async getSelectedShipmentPrice(): Promise<number> {
+        const count = await this.shipmentRadioButtons.count();
+
+        for(let i = 0; i < count; i++) {
+            const radio = this.shipmentRadioButtons.nth(i);
+
+            if(await radio.isChecked()) {
+                const price = this.shipmentPrices.nth(i);
+                const text = await price.textContent();
+                return this.parsePrice(text);
+            }
+        }
+        return 0;
+    }
+
 
     getUrl(): string {
         return this.page.url();
