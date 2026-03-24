@@ -147,6 +147,30 @@ export class CartPage {
         return await this.shipmentRadioButtons.nth(index).isChecked();
     }
 
+    async getShipmentPriceByIndex(index: number): Promise<number> {
+    const text = await this.shipmentPrices.nth(index).textContent();
+    return this.parsePrice(text);
+    }
+
+    async getAnotherShipmentRadioButtonIndexWithDifferentPrice(selectedIndex: number): Promise<number> {
+        const count = await this.shipmentRadioButtons.count();
+        const selectedPrice = await this.getShipmentPriceByIndex(selectedIndex);
+
+        for (let i = 0; i < count; i++) {
+            if (i === selectedIndex) {
+                continue;
+            }
+
+            const currentPrice = await this.getShipmentPriceByIndex(i);
+
+            if (currentPrice !== selectedPrice) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     //helper
     private parsePrice(text: string | null): number {
         if (!text) return 0;
@@ -183,6 +207,24 @@ export class CartPage {
             }
         }
         return 0;
+    }
+
+    async waitForTotalValueToChange(previousTotal: number): Promise<void> {
+    await this.page.waitForFunction(
+        ({ selector, oldValue }) => {
+            const element = document.querySelector(selector);
+            if (!element) {
+                return false;
+            }
+
+            const text = element.textContent?.replace('€', '').replace(',', '').trim();
+            return Number(text) !== oldValue;
+        },
+        {
+            selector: 'tr.order-total .woocommerce-Price-amount',
+            oldValue: previousTotal,
+        }
+    );
     }
 
 
