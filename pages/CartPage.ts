@@ -20,6 +20,9 @@ export class CartPage {
     private readonly shipmentPrices: Locator;
     private readonly totalPrice: Locator;
 
+    private readonly shipmentLabels: Locator;
+    private readonly shipmentItems: Locator;
+
     constructor(page: Page) {
         this.page = page;
         this.emptyCartBlock = new EmptyCartBlock(page);
@@ -39,6 +42,9 @@ export class CartPage {
         this.subtotalPrice = page.locator('tr.cart-subtotal .woocommerce-Price-amount');
         this.shipmentPrices = page.locator('tr.woocommerce-shipping-totals.shipping .woocommerce-Price-amount');
         this.totalPrice = page.locator('tr.order-total .woocommerce-Price-amount');
+
+        this.shipmentLabels = page.locator('ul#shipping_method label');
+        this.shipmentItems = page.locator('ul#shipping_method li');
 
         }
 
@@ -195,18 +201,22 @@ export class CartPage {
     }
 
     async getSelectedShipmentPrice(): Promise<number> {
-        const count = await this.shipmentRadioButtons.count();
+    const count = await this.shipmentRadioButtons.count();
 
-        for(let i = 0; i < count; i++) {
-            const radio = this.shipmentRadioButtons.nth(i);
+    for (let i = 0; i < count; i++) {
+        if (await this.shipmentRadioButtons.nth(i).isChecked()) {
+            const priceElement = this.shipmentItems.nth(i).locator('.woocommerce-Price-amount');
 
-            if(await radio.isChecked()) {
-                const price = this.shipmentPrices.nth(i);
-                const text = await price.textContent();
-                return this.parsePrice(text);
+            if (await priceElement.count() === 0) {
+                return 0;
             }
+
+            const text = await priceElement.textContent();
+            return this.parsePrice(text);
         }
-        return 0;
+    }
+
+    return 0;
     }
 
     async waitForTotalValueToChange(previousTotal: number): Promise<void> {
@@ -226,6 +236,22 @@ export class CartPage {
         }
     );
     }
+
+    async getShipmentRadioButtonIndexByLabel(labelText: string): Promise<number> {
+    const count = await this.shipmentLabels.count();
+
+    for (let i = 0; i < count; i++) {
+        const text = await this.shipmentLabels.nth(i).textContent();
+
+        if (text?.trim().includes(labelText)) {
+            return i;
+        }
+    }
+
+    return -1;
+    }
+
+    
 
 
     getUrl(): string {
